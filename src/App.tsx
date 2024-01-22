@@ -8,8 +8,6 @@ import { Pointer } from "./types/types";
 import Board from "./components/Board";
 import { pointerStatuses } from "./consts/consts";
 const App = () => {
-    //TODO: fix bug on scroll
-
     const [pointers, setPointers] = useState([] as Pointer[]);
 
     function getMousePos(event:any) {
@@ -18,11 +16,12 @@ const App = () => {
         const x = event.clientX;
         const y = event.clientY;
 
-        //position within the element in percentages to make img scalable without loosing coordinates
-        const relativeXPosition = (x/rect.right) * 100;
-        const relativeYPosition = (y/rect.bottom) * 100;
 
-        console.log(rect, {x, y})
+        //position within the element in percentages to make img scalable without loosing coordinates
+        //rect.left and rect.bottom - values that changes during scroll - so count them during calculations
+        const relativeXPosition = ((x - rect.left)/(rect.right - rect.left)) * 100;
+        const relativeYPosition = ((y - rect.top)/(rect.bottom - rect.top)) * 100;
+
         return [relativeXPosition, relativeYPosition];
     }
     const handleBoardClick = (event:React.FormEvent<EventTarget>) => {

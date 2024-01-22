@@ -30,14 +30,14 @@ const Board = ({imgUrl, handleClick, pointers, ...props}:Props) => {
 
 
     return (
-        <div className={`overflow-auto relative`}
+        <div className={`overflow-scroll relative max-w-fit`}
              // style={{
              //     backgroundImage: `url(${imgUrl})`,
              //     backgroundSize: `${imgSize.width}px ${imgSize.height}px`,
              //    }}
              onClick={(event) => handleClick(event)}
         >
-            <img src={imgUrl}  alt={'waldo map'}/>
+            <img src={imgUrl} alt={'waldo map'}/>
             {renderPointer()}
         </div>
     );
