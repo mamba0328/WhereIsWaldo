@@ -22,4 +22,5 @@ export type Character =  {
     "map_id":string,
     "timeTaken": number,
     "status": number,
+    hint: string,
 }

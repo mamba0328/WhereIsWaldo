@@ -64,6 +64,24 @@ body{
     cursor: inherit;
 }
 
+.pointer-menu{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    z-index: 2;
+    transform: translate(-100%, -100%);
+}
+
+.pointer-menu:hover{
+    display: flex;
+
+    position: absolute;
+    z-index: 2;
+}
+
+.board:has(.pointer:hover) ~ .pointer-menu {
+    display: flex;
+}
 
 .collapse-menu{
     transition: max-height 0.3s ease-in-out;
@@ -81,4 +99,8 @@ body{
 
 .collapse-button.active{
     transform: rotate(-225deg);
+}
+
+.tooltip-wrapper:not(.founded):hover .tooltip{
+    display: inline-block;
 }

@@ -36,9 +36,12 @@ function Menu({config, ...props} : Props) {
                    const foundedStyles = isFounded ? 'line-through text-appGreen' : '';
                    const formattedTime = getFormattedTime(item.timeTaken);
                    return (
-                       <li className={`border-b-2 border-b-secondaryBg border-opacity-30 select-none mr-5 flex gap-2` }>
-                            <p className={`font-bold font-mono ${foundedStyles}`}>{item.name}</p>
-                           {isFounded && <span className={'ml-auto opacity-80'}>{formattedTime}</span>}
+                       <li className={`tooltip-wrapper border-b-2 border-b-secondaryBg border-opacity-30 select-none mr-5 flex flex-col gap-2 ${isFounded && 'founded'}` }>
+                           <div className={'flex w-full justify-between gap-2'}>
+                               <p className={`font-bold font-mono ${foundedStyles}`}>{item.name}</p>
+                               {isFounded && <span className={'ml-auto opacity-80'}>{formattedTime}</span>}
+                           </div>
+                           <p className={'tooltip hidden text-highlightText'}>{item.hint}</p>
                        </li>
                    )
                })}

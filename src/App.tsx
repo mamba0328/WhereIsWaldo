@@ -3,7 +3,7 @@ import React, {useState, useCallback, useEffect,} from 'react';
 // @ts-ignore
 import waldoSki from '../public/imgs/waldo-ski.jpg';
 
-import { Pointer, Character } from "./types/types";
+import { Pointer, Character, Position} from "./types/types";
 
 import Board from "./components/Board";
 import Menu from "./components/Menu/Menu";
@@ -13,7 +13,6 @@ const App = () => {
     const [pointers, setPointers] = useState([] as Pointer[]);
     const [characters, setCharacters] = useState([] as Character[]);
     const [loaded, setLoaded] = useState(false);
-
 
     useEffect(() => {
         getCharacters();
@@ -60,9 +59,9 @@ const App = () => {
     }
 
     return (
-        <main>
-            <Board imgUrl={waldoSki} handleClick={handleBoardClick} pointers={pointers}/>
-            <Menu config={characters}/>
+        <main className={'main'}>
+            <Board config={characters} imgUrl={waldoSki} handleClick={handleBoardClick} pointers={pointers}/>
+            <Menu config={characters} />
         </main>
     );
 };
