@@ -27,14 +27,14 @@ const Board = ({imgUrl, handleClick, pointers, ...props}:Props) => {
     }
 
     return (
-        <div className={`overflow-scroll relative min-w-fit min-h-fit`}
+        <div className={`overflow-scroll relative min-w-fit min-h-fit select-none`}
              // style={{
              //     backgroundImage: `url(${imgUrl})`,
              //     backgroundSize: `${imgSize.width}px ${imgSize.height}px`,
              //    }}
              onClick={(event) => handleClick(event)}
         >
-            <img src={imgUrl} alt={'waldo map'} style={{minWidth: imgSize.width + 'px', minHeight: imgSize.height + 'px'}} onLoad={getImgSize}/>
+            <img className={'select-none'} src={imgUrl} alt={'waldo map'} style={{minWidth: imgSize.width + 'px', minHeight: imgSize.height + 'px'}} onLoad={getImgSize}/>
             {renderPointer()}
         </div>
     );

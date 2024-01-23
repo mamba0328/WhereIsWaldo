@@ -2,16 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --mainBg: #022C43;
+    --secondaryBg: #053F5E;
+    --mainText: #FFF;
+    --secondaryText: #115173;
+    --highlightText: #FFD700;
+    --appGreen: #16A34AFF;
+    --appBlack: #000;
+}
+
+body{
+    cursor: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3D%2522delete%2Bicon%2522&psig=AOvVaw0lrGibjvsTRgeFtAPTRFIn&ust=1706096267935000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKjzqYK284MDFQAAAAAdAAAAABAD'), auto;
+}
 
 .pointer{
     width: 20px;
     height: 20px;
-    border: 1px solid #000;
-    background-color: #ffd967;
+    border: 1px solid var(--appBlack);
+    background-color: var(--highlightText);
     border-radius: 50%;
     transform: translate(-7.5px, -15px);
     position: absolute;
     z-index: 2;
+
+    cursor: url(./cursors/delete-cursor.svg) 10 10, auto;
 }
 
 .pointer::after{
@@ -20,13 +35,15 @@
 
     width: 10px;
     height: 10px;
-    border: 1px solid #000;
+    border: 1px solid var(--appBlack);
     border-right: none;
     border-top: none;
-    background-color: #ffd967;
+    background-color: var(--highlightText);
     transform: rotate(-45deg);
     bottom: -3px;
     left: 4px;
+
+    cursor: inherit;
 }
 
 .pointer::before{
@@ -35,12 +52,33 @@
 
     width: 10px;
     height: 10px;
-    border: 1px solid #000;
+    border: 1px solid var(--appBlack);
     border-radius: 50%;
     z-index: 1;
-    background-color: #fff;
+    background-color: var(--mainText);
 
     left:50%;
     top:50%;
     transform: translate(-50%, -50%);
+
+    cursor: inherit;
+}
+
+
+.collapse-menu{
+    transition: max-height 0.3s ease-in-out;
+}
+
+.collapse-button{
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid var(--mainText);
+    border-left: 2px solid var(--mainText);
+
+    transition: all 0.3s ease-in-out;
+    transform: rotate(-45deg);
+}
+
+.collapse-button.active{
+    transform: rotate(-225deg);
 }
