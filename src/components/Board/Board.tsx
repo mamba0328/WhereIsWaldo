@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 
 import Pointer from '../Pointer/Pointer';
 
@@ -10,10 +10,15 @@ type Props = {
     pointers: PointerType[],
 }
 const Board = ({imgUrl, handleClick, pointers, ...props}:Props) => {
-    const [imgSize, setImgSize] = useState({
-        width: 0,
-        height: 0,
-    });
+    const initialImgSize = { width: 0, height: 0,}
+    const [imgSize, setImgSize] = useState(initialImgSize);
+
+    const getImgSize = useCallback(() => {
+            const img = new Image();
+            img.src = imgUrl;
+            const { width, height} = img;
+            setImgSize({width, height});
+    }, [imgUrl])
 
     const renderPointer = () => {
         return pointers.map(item => {
@@ -21,23 +26,15 @@ const Board = ({imgUrl, handleClick, pointers, ...props}:Props) => {
         })
     }
 
-    useEffect(() => {
-        const img = new Image();
-        img.src = imgUrl;
-        const { width, height} = img;
-        setImgSize({width, height});
-    }, [imgUrl])
-
-
     return (
-        <div className={`overflow-scroll relative max-w-fit`}
+        <div className={`overflow-scroll relative min-w-fit min-h-fit`}
              // style={{
              //     backgroundImage: `url(${imgUrl})`,
              //     backgroundSize: `${imgSize.width}px ${imgSize.height}px`,
              //    }}
              onClick={(event) => handleClick(event)}
         >
-            <img src={imgUrl} alt={'waldo map'}/>
+            <img src={imgUrl} alt={'waldo map'} style={{minWidth: imgSize.width + 'px', minHeight: imgSize.height + 'px'}} onLoad={getImgSize}/>
             {renderPointer()}
         </div>
     );
