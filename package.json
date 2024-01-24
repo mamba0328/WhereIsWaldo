@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
+    "server": "nodemon app/bin/www.js",
     "dev": "webpack-dev-server"
   },
   "author": "",
@@ -17,8 +18,17 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "babel-loader": "^9.1.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
     "mini-css-extract-plugin": "^2.7.7",
+    "mongoose": "^8.1.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.3",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

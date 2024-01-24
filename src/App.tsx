@@ -10,6 +10,8 @@ import Menu from "./components/Menu/Menu";
 
 import { pointerStatuses, dummyJSON } from "./consts/consts";
 const App = () => {
+    //TODO:
+    // - Delete pointer;
     const [pointers, setPointers] = useState([] as Pointer[]);
     const [characters, setCharacters] = useState([] as Character[]);
     const [loaded, setLoaded] = useState(false);
