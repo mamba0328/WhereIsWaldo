@@ -10,6 +10,7 @@ const apiRouter = require('./routes/api');
 
 const app = express();
 
+app.set('trust proxy', true);
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
