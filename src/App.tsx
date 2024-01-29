@@ -1,69 +1,26 @@
 import React, {useState, useCallback, useEffect,} from 'react';
 
-// @ts-ignore
-import waldoSki from '../public/imgs/waldo-ski.jpg';
+import GameWrapper from "./components/GameWrapper/GameWrapper";
+import MapsSelector from "./components/MapsSelector/MapsSelector";
 
-import { Pointer, Character, Position} from "./types/types";
+import { Map } from './types/types';
 
-import Board from "./components/Board";
-import Menu from "./components/Menu/Menu";
-
-import { pointerStatuses, dummyJSON } from "./consts/consts";
 const App = () => {
-    //TODO:
-    // - Delete pointer;
-    const [pointers, setPointers] = useState([] as Pointer[]);
-    const [characters, setCharacters] = useState([] as Character[]);
-    const [loaded, setLoaded] = useState(false);
+    const [selectedMap, setSelectedMap] = useState(null);
 
-    useEffect(() => {
-        getCharacters();
-        setLoaded(true);
-    }, [])
-    const getCharacters = async () => {
-        //request
-        setCharacters(dummyJSON)
-    }
+    const selectHandler = (map:Map) => setSelectedMap(map);
 
-    const getMousePos = useCallback((event:any) => {
-        const rect = event.target.getBoundingClientRect();
-
-        const x = event.clientX;
-        const y = event.clientY;
-
-        // console.log(rect, {x, y})
-
-        //position within the element in percentages to make img scalable without loosing coordinates
-        //rect.left and rect.bottom - values that changes during scroll - so count them during calculations
-        const relativeXPosition = ((x - rect.left)/(rect.right - rect.left)) * 100;
-        const relativeYPosition = ((y - rect.top)/(rect.bottom - rect.top)) * 100;
-
-        return [relativeXPosition, relativeYPosition];
-    }, [])
-
-
-    const handleBoardClick = (event:React.FormEvent<EventTarget>) => {
-        const [x, y] = getMousePos(event);
-        const pointer = {
-            x,
-            y,
-            status: pointerStatuses.PENDING,
+    const renderApp = () => {
+        if(!selectedMap){
+            return <MapsSelector selectMap={selectHandler}/>
+        } else {
+            return <GameWrapper map={selectedMap}/>
         }
-
-        // @ts-ignore
-        const newPointers = pointers.at(-1)?.status === pointerStatuses.PENDING ?  pointers.toSpliced(-1, 1, pointer) : [...pointers, pointer];
-
-        setPointers(newPointers);
-    }
-
-    if(!loaded){
-        return <h1>Loading...</h1>
     }
 
     return (
         <main className={'main'}>
-            <Board config={characters} imgUrl={waldoSki} handleClick={handleBoardClick} pointers={pointers}/>
-            <Menu config={characters} />
+            {renderApp()}
         </main>
     );
 };

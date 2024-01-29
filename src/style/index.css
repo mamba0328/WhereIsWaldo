@@ -64,6 +64,13 @@ body{
     cursor: inherit;
 }
 
+.pointer_founded, .pointer_founded::after{
+    background-color: var(--appGreen);
+    cursor: unset;
+}
+
+
+
 .pointer-menu{
     display: none;
     flex-direction: column;
@@ -79,7 +86,7 @@ body{
     z-index: 2;
 }
 
-.board:has(.pointer:hover) ~ .pointer-menu {
+.board:has(.pointer_pending:hover) ~ .pointer-menu {
     display: flex;
 }
 

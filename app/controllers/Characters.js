@@ -20,7 +20,7 @@ const validatePosition = async value =>{
 
 const getCharacters = asyncHandler(async (req, res, next) => {
     const { map_id } = req.query;
-    const allCharacters = await Characters.find({...map_id && { map_id }});
+    const allCharacters = await Characters.find({...map_id && { map_id }}).select('-position');
     return res.send(allCharacters);
 })
 

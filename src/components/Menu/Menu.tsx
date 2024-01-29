@@ -31,12 +31,12 @@ function Menu({config, ...props} : Props) {
     const renderItems = () => {
        return (
            <ul className={'flex flex-col gap-3'}>
-               {config.map(item => {
+               {config.map((item, index) => {
                    const isFounded = item.status === charStatuses.FOUNDED;
                    const foundedStyles = isFounded ? 'line-through text-appGreen' : '';
                    const formattedTime = getFormattedTime(item.timeTaken);
                    return (
-                       <li className={`tooltip-wrapper border-b-2 border-b-secondaryBg border-opacity-30 select-none mr-5 flex flex-col gap-2 ${isFounded && 'founded'}` }>
+                       <li key={index} className={`tooltip-wrapper border-b-2 border-b-secondaryBg border-opacity-30 select-none mr-5 flex flex-col gap-2 ${isFounded && 'founded'}` }>
                            <div className={'flex w-full justify-between gap-2'}>
                                <p className={`font-bold font-mono ${foundedStyles}`}>{item.name}</p>
                                {isFounded && <span className={'ml-auto opacity-80'}>{formattedTime}</span>}

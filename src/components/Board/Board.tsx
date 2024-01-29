@@ -1,18 +1,19 @@
 import React, {useEffect, useState, useCallback} from 'react';
 
-import Pointer from '../Pointer/Pointer';
+import Pointer from '../Pointer';
 
 import { Character, Pointer as PointerType }  from "../../types/types";
-import ActionMenu from "../ActionMenu/ActionMenu";
+import ActionMenu from "../ActionMenu";
 import {pointerStatuses} from "../../consts/consts";
 
 type Props = {
+    handleCharacterPositionGuess: Function,
     config: Character[],
     imgUrl: string,
     handleClick: Function,
     pointers: PointerType[],
 }
-const Board = ({config, imgUrl, handleClick, pointers, ...props}:Props) => {
+const Board = ({config, imgUrl, handleClick, handleCharacterPositionGuess, pointers, ...props}:Props) => {
     const initialImgSize = { width: 0, height: 0,}
     const [imgSize, setImgSize] = useState(initialImgSize);
 
@@ -24,8 +25,8 @@ const Board = ({config, imgUrl, handleClick, pointers, ...props}:Props) => {
     }, [imgUrl])
 
     const renderPointer = () => {
-        return pointers.map(item => {
-            return <Pointer {...item} />
+        return pointers.map((item, index) => {
+            return <Pointer {...item} key={index}/>
         })
     }
 
@@ -38,7 +39,7 @@ const Board = ({config, imgUrl, handleClick, pointers, ...props}:Props) => {
 
         const position = {x: pendingPointer.x, y: pendingPointer.y}
 
-        return <ActionMenu config={config} position={position}/>
+        return <ActionMenu config={config} position={position} handleCharacterPositionGuess={handleCharacterPositionGuess}/>
     }
 
     return (
