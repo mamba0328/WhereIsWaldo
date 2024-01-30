@@ -12,8 +12,8 @@ const verifyMapExists = async value => {
     }
 }
 
-const verifyUserExists = async value => {
-    const userExists = await Users.findById(value);
+const verifyUserExists = async address => {
+    const userExists = await Users.findOne(address);
     if(!userExists){
         throw Error('User with such id dosn\'t exists')
     }
@@ -21,17 +21,17 @@ const verifyUserExists = async value => {
 
 const getLeaderboard = asyncHandler(async (req, res, next) => {
     const { map_id } = req.params;
-    const leaderboard = await Score.find({map_id});
+    const { limit } = req.query;
+    const leaderboard = await Score.find({map_id}).populate('user_id').limit(limit ?? 50);
     return res.send(leaderboard);
 })
 
 const assignScore = [
-    body('map_id').optional().isMongoId().custom(verifyMapExists),
-    body('user_id').optional().isMongoId().custom(verifyUserExists),
+    body('map_id').isMongoId().custom(verifyMapExists),
+    body('user_id').isMongoId().custom(verifyUserExists),
     body('score').exists().isNumeric(),
     asyncHandler(async (req, res, next) => {
         const { map_id, user_id, score, } = req.body;
-
         const result = validationResult(req);
         const errors = result.errors;
 

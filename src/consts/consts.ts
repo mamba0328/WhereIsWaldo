@@ -1,6 +1,7 @@
 export const pointerStatuses = Object.freeze({
     PENDING: 'PENDING',
     FOUNDED : 'FOUNDED',
+    WRONG : 'WRONG',
 });
 
 export const charStatuses = Object.freeze({

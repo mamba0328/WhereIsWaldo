@@ -9,6 +9,7 @@ import {
 }                                       from "../consts/api-consts";
 
 import { CheckCharacterExistOnPayload } from "../types/types";
+import Leaderboard from "../components/Leaderboard/Leaderboard";
 
 const axiosApi = axios.create({
     baseURL: process.env.API_ENDPOINT,
@@ -26,6 +27,11 @@ const { get, post, put, delete: del, } = axiosApi;
 
 export const getMaps = async () => {
     const response = await get(MAPS);
+    return response;
+}
+
+export const getLeaderboard = async (map_id:string) => {
+    const response = await get(`${SCORES}/${map_id}`);
     return response;
 }
 

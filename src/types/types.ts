@@ -3,7 +3,7 @@ import {checkCharacterExistOn} from "../api/routes";
 export type Pointer = {
     x: number,
     y: number,
-    status: 'FOUNDED' | 'PENDING',
+    status: 'FOUNDED' | 'PENDING' | 'WRONG',
     name?: string,
 }
 

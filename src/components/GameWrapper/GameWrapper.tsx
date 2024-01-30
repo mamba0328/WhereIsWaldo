@@ -2,12 +2,14 @@ import React, {useState, useCallback, useEffect,} from 'react';
 
 import Board from "../Board";
 import Menu from "../Menu";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 import { getCharacters } from "../../api/routes";
 
-import { pointerStatuses, } from "../../consts/consts";
+import { pointerStatuses, charStatuses} from "../../consts/consts";
 import { Pointer, Character, Position, Map } from "../../types/types";
 import { checkCharacterExistOn } from "../../api/routes";
+import GameOverWindow from "../GameOverWindow/GameOverWindow";
 
 type Props = {
     map: Map
@@ -15,10 +17,12 @@ type Props = {
 const GameWrapper = ({map, ...props}:Props) => {
     //TODO:
     // - Game logic;
+    // - Select map;
     // - Loader while checking response when check position?;
     // - LocalStorage?;
-    // - Select map;
 
+
+    const [gameOver, setGameOver] = useState(false);
     const [pointers, setPointers] = useState([] as Pointer[]);
     const [characters, setCharacters] = useState([] as Character[]);
     const [loaded, setLoaded] = useState(false);
@@ -27,6 +31,15 @@ const GameWrapper = ({map, ...props}:Props) => {
         getSetCharacters();
         setLoaded(true);
     }, [map])
+
+    useEffect(() => {
+        if(!characters.length) return
+
+        const allCharacterFounded = !characters.filter(character => character.status === charStatuses.UNFOUNDED).length;
+        if(allCharacterFounded){
+            setGameOver(true)
+        }
+    }, [characters])
     const getSetCharacters = async () => {
         const response = await getCharacters(map._id);
         response.data.forEach((item:Character) => item.status = 0);
@@ -42,11 +55,32 @@ const GameWrapper = ({map, ...props}:Props) => {
 
     const settlePendingPointer = (name:string) => {
         const pointersClone = [...pointers];
+        //always last
         const pendingPoint = pointersClone.pop();
         pendingPoint.status = pointerStatuses.FOUNDED;
         pendingPoint.name = name;
         pointersClone.push(pendingPoint);
         setPointers(pointersClone);
+    }
+
+    const setPointerStatusToWrongGuess = () => {
+        const pointersClone = [...pointers];
+        //always last
+        const pendingPoint = pointersClone.pop();
+        pendingPoint.status = pointerStatuses.WRONG;
+        pointersClone.push(pendingPoint);
+        setPointers(pointersClone);
+    }
+
+    const clearWrongGuessStatusFromPointer = () => {
+        setTimeout(() => {
+            const pointersClone = [...pointers];
+            //always last
+            const pendingPoint = pointersClone.pop();
+            pendingPoint.status = pointerStatuses.PENDING;
+            pointersClone.push(pendingPoint);
+            setPointers(pointersClone);
+        }, 300)
     }
 
     const deletePendingPointer = () => {
@@ -88,11 +122,16 @@ const GameWrapper = ({map, ...props}:Props) => {
         try {
             const payload = { point:position, map_id: map._id };
             const response = await checkCharacterExistOn(character_id, payload);
-            const timeTaken = 100; //TODO
-            if(response){
+            const timeTaken = response.data.time_taken;
+
+            if(response.data.exists){
                 setCharacterIsFound(character_id, timeTaken);
                 const character = characters.find(character => character._id === character_id);
                 settlePendingPointer(character.name);
+            } else{
+                //toggles animation
+                setPointerStatusToWrongGuess()
+                clearWrongGuessStatusFromPointer()
             }
 
         } catch (error){
@@ -106,6 +145,7 @@ const GameWrapper = ({map, ...props}:Props) => {
 
     return (
         <main className={'main'}>
+            {<GameOverWindow map={map} score={characters?.sort((a, b) => a.timeTaken - b.timeTaken).at(-1)?.timeTaken} />}
             <Board config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers} deletePendingPointer={deletePendingPointer}/>
             <Menu config={characters} />
         </main>

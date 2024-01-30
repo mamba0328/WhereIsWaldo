@@ -1,9 +1,12 @@
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 
+const TimeService = require('../services/TimeService');
+
 const Characters = require('../models/Characters');
 const Maps = require('../models/Maps');
 
+const timer = new TimeService();
 const validatePosition = async value =>{
     const keys = Object.keys(value);
     const values = Object.values(value);
@@ -21,6 +24,7 @@ const validatePosition = async value =>{
 const getCharacters = asyncHandler(async (req, res, next) => {
     const { map_id } = req.query;
     const allCharacters = await Characters.find({...map_id && { map_id }}).select('-position');
+    timer.startTimer();
     return res.send(allCharacters);
 })
 
@@ -145,7 +149,7 @@ const checkCharacterExistenceOnPosition =  [
         const yIsInsideCharacterBox = point.y >= top_left.y && point.y <= bottom_right.y;
         const pointInSideCharacterBox = xIsInsideCharacterBox && yIsInsideCharacterBox;
 
-        res.send(pointInSideCharacterBox);
+        res.send({exists:pointInSideCharacterBox, time_taken:timer.getTimePassed()});
     })
 ]
 

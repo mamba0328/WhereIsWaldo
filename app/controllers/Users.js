@@ -5,6 +5,7 @@ const Users = require('../models/Users');
 
 const getUsers = asyncHandler(async (req, res, next) => {
     const allUsers = await Users.find();
+
     return res.send(allUsers);
 })
 

@@ -8,6 +8,7 @@
     --mainText: #FFF;
     --secondaryText: #115173;
     --highlightText: #FFD700;
+    --appRed: #e8334b;
     --appGreen: #16A34AFF;
     --appBlack: #000;
 }
@@ -69,6 +70,18 @@ body{
     cursor: unset;
 }
 
+.pointer_pending{
+    animation: bounce 1s infinite;
+}
+
+.pointer_wrong-guess{
+    animation: shake 0.3s infinite;
+}
+
+.pointer_wrong-guess, .pointer_wrong-guess::after{
+    background-color: var(--appRed);
+    cursor: unset;
+}
 
 
 .pointer-menu{
@@ -118,4 +131,30 @@ body{
 
 .tooltip-wrapper:not(.founded):hover .tooltip{
     display: inline-block;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translate(-7.5px, calc(0% - 15px));
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: translate(-7.5px, calc(25% - 15px));
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+@keyframes shake {
+    0%, 50%, 100% {
+        transform: translate(-7.5px, -15px);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    25% {
+        transform: translate(-7.5px, -15px) rotate(45deg);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    75% {
+        transform: translate(-7.5px, -15px) rotate(-45deg);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
 }
