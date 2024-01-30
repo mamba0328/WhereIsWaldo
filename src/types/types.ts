@@ -4,6 +4,7 @@ export type Pointer = {
     x: number,
     y: number,
     status: 'FOUNDED' | 'PENDING',
+    name?: string,
 }
 
 

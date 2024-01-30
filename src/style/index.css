@@ -86,7 +86,15 @@ body{
     z-index: 2;
 }
 
+.pointer__tooltip{
+    display: none;
+}
+
 .board-wrapper:has(.pointer_pending:hover) .pointer-menu {
+    display: flex;
+}
+
+.board-wrapper:has(.pointer_founded:hover) .pointer__tooltip {
     display: flex;
 }
 

@@ -14,8 +14,6 @@ type Props = {
 }
 const GameWrapper = ({map, ...props}:Props) => {
     //TODO:
-    // - Delete pointer;
-    // - Tooltip founded char name pointer;
     // - Game logic;
     // - Loader while checking response when check position?;
     // - LocalStorage?;
@@ -42,10 +40,11 @@ const GameWrapper = ({map, ...props}:Props) => {
         setCharacters(charactersClone);
     }
 
-    const settlePendingPointer = () => {
+    const settlePendingPointer = (name:string) => {
         const pointersClone = [...pointers];
         const pendingPoint = pointersClone.pop();
         pendingPoint.status = pointerStatuses.FOUNDED;
+        pendingPoint.name = name;
         pointersClone.push(pendingPoint);
         setPointers(pointersClone);
     }
@@ -92,7 +91,8 @@ const GameWrapper = ({map, ...props}:Props) => {
             const timeTaken = 100; //TODO
             if(response){
                 setCharacterIsFound(character_id, timeTaken);
-                settlePendingPointer();
+                const character = characters.find(character => character._id === character_id);
+                settlePendingPointer(character.name);
             }
 
         } catch (error){
