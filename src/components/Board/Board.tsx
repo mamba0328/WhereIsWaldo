@@ -8,12 +8,13 @@ import {pointerStatuses} from "../../consts/consts";
 
 type Props = {
     handleCharacterPositionGuess: Function,
+    deletePendingPointer: Function,
     config: Character[],
     imgUrl: string,
     handleClick: Function,
     pointers: PointerType[],
 }
-const Board = ({config, imgUrl, handleClick, handleCharacterPositionGuess, pointers, ...props}:Props) => {
+const Board = ({config, imgUrl, handleClick, handleCharacterPositionGuess, deletePendingPointer, pointers, ...props}:Props) => {
     const initialImgSize = { width: 0, height: 0,}
     const [imgSize, setImgSize] = useState(initialImgSize);
 
@@ -24,9 +25,9 @@ const Board = ({config, imgUrl, handleClick, handleCharacterPositionGuess, point
             setImgSize({width, height});
     }, [imgUrl])
 
-    const renderPointer = () => {
+    const renderPointers = () => {
         return pointers.map((item, index) => {
-            return <Pointer {...item} key={index}/>
+            return <Pointer {...item} key={index} deletePendingPointer={deletePendingPointer}/>
         })
     }
 
@@ -53,8 +54,8 @@ const Board = ({config, imgUrl, handleClick, handleCharacterPositionGuess, point
                  onClick={(event) => handleClick(event)}
             >
                 <img className={'select-none'} src={imgUrl} alt={'waldo map'} style={{minWidth: imgSize.width + 'px', minHeight: imgSize.height + 'px'}} onLoad={getImgSize}/>
-                {renderPointer()}
             </div>
+            {renderPointers()}
             {renderActionMenu()}
         </section>
     );

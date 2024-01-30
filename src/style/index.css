@@ -86,7 +86,7 @@ body{
     z-index: 2;
 }
 
-.board:has(.pointer_pending:hover) ~ .pointer-menu {
+.board-wrapper:has(.pointer_pending:hover) .pointer-menu {
     display: flex;
 }
 

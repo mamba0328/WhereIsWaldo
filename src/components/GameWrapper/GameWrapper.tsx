@@ -50,6 +50,10 @@ const GameWrapper = ({map, ...props}:Props) => {
         setPointers(pointersClone);
     }
 
+    const deletePendingPointer = () => {
+        setPointers(pointers.filter(pointer => pointer.status !== pointerStatuses.PENDING))
+    }
+
     const getMousePos = useCallback((event:any) => {
         const rect = event.target.getBoundingClientRect();
 
@@ -102,7 +106,7 @@ const GameWrapper = ({map, ...props}:Props) => {
 
     return (
         <main className={'main'}>
-            <Board config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers}/>
+            <Board config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers} deletePendingPointer={deletePendingPointer}/>
             <Menu config={characters} />
         </main>
     );

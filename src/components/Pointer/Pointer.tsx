@@ -1,11 +1,25 @@
 import React from 'react';
 
-import { Pointer } from "../../types/types";
 import { pointerStatuses } from "../../consts/consts";
 
-const Pointer = ({x, y, status, ...props} : Pointer) => {
+type Props = {
+    x: number,
+    y: number,
+    status: string,
+    deletePendingPointer: Function,
+}
+const Pointer = ({x, y, status, deletePendingPointer, ...props}:Props) => {
+
+    const handleClick = () => {
+        if(status === pointerStatuses.FOUNDED){
+            return
+        }
+
+        deletePendingPointer();
+    }
+
     return (
-        <div className={`pointer pointer_${status === pointerStatuses.FOUNDED ? 'founded' : 'pending'}`} style={ {left:`${x}%`, top: `${y}%`}}></div>
+        <div className={`pointer pointer_${status === pointerStatuses.FOUNDED ? 'founded' : 'pending'}`} style={ {left:`${x}%`, top: `${y}%`}} onClick={handleClick}></div>
     );
 };
 
