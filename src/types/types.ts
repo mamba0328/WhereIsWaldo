@@ -38,3 +38,10 @@ export type CheckCharacterExistOnPayload = {
     map_id: string,
     point: Position,
 }
+
+export type ScorePayload = {
+    map_id: string,
+    user_id: string,
+    score: number,
+}
+

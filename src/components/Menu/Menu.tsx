@@ -4,6 +4,8 @@ import { useDraggable } from "../../hooks/useDraggable/useDraggable";
 import { charStatuses } from "../../consts/consts";
 import { Character } from "../../types/types";
 
+import { getFormattedTime } from "../../utils/helpers/helpers";
+
 type Props = {
     config: Character[],
 }
@@ -21,13 +23,6 @@ function Menu({config, ...props} : Props) {
         onDrag: handleDrag
     });
 
-
-    const getFormattedTime = (ms:number) => {
-        const date = new Date(ms);
-        const seconds = date.getSeconds();
-        const minutes = date.getMinutes();
-        return `${minutes}:${seconds < 9 ? '0' + seconds : seconds}`
-    }
     const renderItems = () => {
        return (
            <ul className={'flex flex-col gap-3'}>

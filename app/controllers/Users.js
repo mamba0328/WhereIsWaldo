@@ -9,18 +9,25 @@ const getUsers = asyncHandler(async (req, res, next) => {
     return res.send(allUsers);
 })
 
+const getRequestUser = asyncHandler(async (req, res, next) => {
+    const address = req.ip;
+    const user = await Users.findOne({address});
+
+    return res.send(user);
+})
+
 const createUser = [
-    body('name').exists().isString(),
+    // body('name').exists().isString(),
     asyncHandler(async (req, res, next) => {
-        const { name } = req.body;
+        // const { name } = req.body;
         const address = req.ip
-
-        const result = validationResult(req);
-        const errors = result.errors;
-
-        if(errors.length){
-            return  res.status(401).send(errors);
-        }
+        //
+        // const result = validationResult(req);
+        // const errors = result.errors;
+        //
+        // if(errors.length){
+        //     return  res.status(401).send(errors);
+        // }
 
         const userExists = await Users.findOne({address});
 
@@ -31,39 +38,39 @@ const createUser = [
             throw error
         }
 
-        const newUser = await Users.create({name, address});
+        const newUser = await Users.create({address});
 
         return res.send(newUser)
 }),
 ]
 
-const editUser = [
-    body('name').exists().isString(),
-    asyncHandler(async (req, res, next) => {
-        const { id } = req.params;
-        const { name } = req.body;
-
-        const result = validationResult(req);
-        const errors = result.errors;
-
-        if(errors.length){
-            return  res.status(401).send(errors);
-        }
-
-        const user = await Users.findById(id);
-
-        if(!user){
-            const error = new Error('User with such id dosn\'t exists');
-            error.code = 400;
-
-            throw error
-        }
-
-        const editedUser = await Users.findByIdAndUpdate(id, { name } );
-
-        return res.send(editedUser)
-    }),
-]
+// const editUser = [
+//     body('name').exists().isString(),
+//     asyncHandler(async (req, res, next) => {
+//         const { id } = req.params;
+//         const { name } = req.body;
+//
+//         const result = validationResult(req);
+//         const errors = result.errors;
+//
+//         if(errors.length){
+//             return  res.status(401).send(errors);
+//         }
+//
+//         const user = await Users.findById(id);
+//
+//         if(!user){
+//             const error = new Error('User with such id dosn\'t exists');
+//             error.code = 400;
+//
+//             throw error
+//         }
+//
+//         const editedUser = await Users.findByIdAndUpdate(id, { name } );
+//
+//         return res.send(editedUser)
+//     }),
+// ]
 
 const deleteUser = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
@@ -83,5 +90,5 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-    createUser, deleteUser, editUser, getUsers,
+    createUser, deleteUser, getUsers, getRequestUser
 }

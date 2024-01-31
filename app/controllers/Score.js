@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const { body, validationResult, param} = require('express-validator');
+const { body, validationResult, query } = require('express-validator');
 
 const Score = require('../models/Score');
 const Maps = require("../models/Maps");
@@ -12,8 +12,8 @@ const verifyMapExists = async value => {
     }
 }
 
-const verifyUserExists = async address => {
-    const userExists = await Users.findOne(address);
+const verifyUserExists = async value => {
+    const userExists = await Users.findById(value);
     if(!userExists){
         throw Error('User with such id dosn\'t exists')
     }
@@ -22,38 +22,67 @@ const verifyUserExists = async address => {
 const getLeaderboard = asyncHandler(async (req, res, next) => {
     const { map_id } = req.params;
     const { limit } = req.query;
-    const leaderboard = await Score.find({map_id}).populate('user_id').limit(limit ?? 50);
+    const leaderboard = await Score.find({map_id}).limit(limit ?? 50).sort('score');
     return res.send(leaderboard);
 })
+
+const getSingleScore = [
+    query('map_id').isMongoId().custom(verifyMapExists),
+    query('user_id').isMongoId().custom(verifyUserExists),
+    asyncHandler(async (req, res, next) => {
+        const { map_id, user_id, } = req.query;
+        const result = validationResult(req);
+        const errors = result.errors;
+
+        if(errors.length){
+            return  res.status(400).send(errors);
+        }
+
+        const scoreInDB = await Score.findOne({map_id, user_id});
+
+        return res.send(scoreInDB);
+    }),
+]
+
 
 const assignScore = [
     body('map_id').isMongoId().custom(verifyMapExists),
     body('user_id').isMongoId().custom(verifyUserExists),
     body('score').exists().isNumeric(),
+    body('nickname').exists().isString().trim().escape().isLength({min:1, max:40,}),
     asyncHandler(async (req, res, next) => {
-        const { map_id, user_id, score, } = req.body;
+        const { map_id, user_id, score, nickname } = req.body;
         const result = validationResult(req);
         const errors = result.errors;
 
         if(errors.length){
-            return  res.status(401).send(errors);
+            return  res.status(400).send(errors);
+        }
+
+        const scoreWithTheSameNickname = await Score.findOne({nickname});
+
+        if(scoreWithTheSameNickname && scoreWithTheSameNickname.user_id !== user_id){
+            const error = new Error('Score with the same nickname already belongs to another player');
+            error.code = 400;
+
+            throw error
         }
 
         const scoreInDB = await Score.findOne({map_id, user_id});
 
         if(!scoreInDB){
-            const newScore = await Score.create({map_id, user_id, score});
+            const newScore = await Score.create({map_id, user_id, score, nickname});
 
             return res.send(newScore)
         }
 
-        if(scoreInDB.score > score){
+        if(scoreInDB.score < score){
             const error = new Error('You trying to rewrite better result which is restricted');
             error.code = 400;
 
             throw error
         } else {
-            const updatedScore = await Score.findByIdAndUpdate(scoreInDB._id, {score});
+            const updatedScore = await Score.findByIdAndUpdate(scoreInDB._id, {score, nickname});
             updatedScore.score = score;
             return res.send(updatedScore)
         }
@@ -78,5 +107,5 @@ const deleteScore = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-    assignScore, deleteScore, getLeaderboard,
+    assignScore, deleteScore, getLeaderboard, getSingleScore
 }

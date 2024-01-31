@@ -16,11 +16,10 @@ type Props = {
 }
 const GameWrapper = ({map, ...props}:Props) => {
     //TODO:
-    // - Game logic;
     // - Select map;
+    // - Prevent map interaction if gameover;
     // - Loader while checking response when check position?;
     // - LocalStorage?;
-
 
     const [gameOver, setGameOver] = useState(false);
     const [pointers, setPointers] = useState([] as Pointer[]);
@@ -143,9 +142,12 @@ const GameWrapper = ({map, ...props}:Props) => {
         return <h1>Loading...</h1>
     }
 
+
+    const score = Math.max(...characters.map(item => item.timeTaken));
+
     return (
         <main className={'main'}>
-            {<GameOverWindow map={map} score={characters?.sort((a, b) => a.timeTaken - b.timeTaken).at(-1)?.timeTaken} />}
+            {gameOver && <GameOverWindow map={map} score={score} />}
             <Board config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers} deletePendingPointer={deletePendingPointer}/>
             <Menu config={characters} />
         </main>

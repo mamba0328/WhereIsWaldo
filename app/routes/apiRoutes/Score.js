@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { assignScore, deleteScore, getLeaderboard,} = require('../../controllers/Score');
+const { assignScore, deleteScore, getLeaderboard, getSingleScore} = require('../../controllers/Score');
+
+router.get('/', getSingleScore);
 
 router.get('/:map_id', getLeaderboard);
 
