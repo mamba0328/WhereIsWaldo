@@ -46,8 +46,8 @@ const Board = ({config, imgUrl, gameOver, handleClick, handleCharacterPositionGu
 
     return (
         //board-wrapper here separates board with clickHandler and ActionMenu - so clickHandler wasn't triggered when click occurs inside ActionMenu
-            <section className={`board-wrapper relative min-w-fit min-h-fit`}>
-                <div className={`board overflow-scroll relative min-w-fit min-h-fit select-none`}
+            <section className={`board-wrapper relative min-w-fit min-h-fit hide-scrollbars-keep-functionality`}>
+                <div className={`board relative min-w-fit min-h-fit select-none`}
                     // style={{
                     //     backgroundImage: `url(${imgUrl})`,
                     //     backgroundSize: `${imgSize.width}px ${imgSize.height}px`,

@@ -14,7 +14,7 @@ const apiRouter = require('./routes/api');
 const app = express();
 const limiter = RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20,
+    max: 200,
 });
 
 

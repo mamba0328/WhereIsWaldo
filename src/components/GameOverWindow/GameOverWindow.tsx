@@ -32,6 +32,8 @@ function GameOverWindow({score, map, ...props}:Props) {
 
     const getSetUsersPreviousScore = async () => {
         try{
+            if(!currentUser) return setLoaded(true);
+
             const response = await getUsersScore(map._id, currentUser._id);
             response.data && setUsersPreviousScore(response.data);
             setLoaded(true)
@@ -42,8 +44,10 @@ function GameOverWindow({score, map, ...props}:Props) {
 
     const submitScore = async () => {
         try {
-            setLoaded(false)
             let user
+            const nickname = ref.current.value;
+
+            setLoaded(false)
 
             if(!currentUser){
                 const newUser = await createUser();
@@ -55,7 +59,7 @@ function GameOverWindow({score, map, ...props}:Props) {
             const payload = {
                 map_id: map._id,
                 user_id: user._id,
-                nickname: ref.current.value,
+                nickname,
                 score,
             }
 
@@ -86,7 +90,7 @@ function GameOverWindow({score, map, ...props}:Props) {
                 return <Loader/>
             }
             case scoreIsSend:{
-                return <h1 className={'text-highlightText font-bold text-3xl'}>Your score is submitted</h1>
+                return <h1 className={'text-highlightText font-bold text-3xl text-center'}>Your score is submitted</h1>
             }
             case previousResultIsBetter: {
                 return (
@@ -119,7 +123,7 @@ function GameOverWindow({score, map, ...props}:Props) {
                 { renderAssignScoreForm() }
             </div>
 
-            <Leaderboard updateLeaderboardCount={updateLeaderboardCount} map_id={map._id} styles={'w-max p-2 bg-secondaryBg max-h-[50vh] min-h-[50vh] overflow-auto overscroll-contain'}/>
+            <Leaderboard updateLeaderboardCount={updateLeaderboardCount} map_id={map._id} styles={'w-max p-2 bg-secondaryBg max-h-[50vh] min-h-[50vh] overflow-auto overscroll-contain custom-scrollbar'}/>
         </div>
     );
 }

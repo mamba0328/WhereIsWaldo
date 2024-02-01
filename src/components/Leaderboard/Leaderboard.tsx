@@ -56,7 +56,7 @@ function Leaderboard({styles, map_id, updateLeaderboardCount, ...props}:Props) {
 
     return (
         <div className={styles}>
-            <div className={'text-highlightText font-bold text-3xl text-center underline mb-5'}>Best scores</div>
+            <div className={'text-highlightText font-bold text-3xl text-center underline mb-5 hide-scrollbars-keep-functionality'}>Best scores</div>
             {renderLeaders()}
         </div>
     );

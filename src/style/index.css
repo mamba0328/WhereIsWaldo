@@ -137,6 +137,16 @@ body{
     animation: grow 5s infinite;
 }
 
+
+.hide-scrollbars-keep-functionality{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbars-keep-functionality::-webkit-scrollbar{
+    display: none;
+}
+
 @keyframes bounce {
     0%, 100% {
         transform: translate(-7.5px, calc(0% - 15px));
