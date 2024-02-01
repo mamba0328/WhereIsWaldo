@@ -8,8 +8,9 @@ import { getFormattedTime } from "../../utils/helpers/helpers";
 
 type Props = {
     config: Character[],
+    exitMap: Function
 }
-function Menu({config, ...props} : Props) {
+function Menu({config, exitMap, ...props} : Props) {
     const [collapsed, setCollapsed] = useState(false);
 
     const handleDrag = useCallback(
@@ -25,7 +26,7 @@ function Menu({config, ...props} : Props) {
 
     const renderItems = () => {
        return (
-           <ul className={'flex flex-col gap-3'}>
+           <ul className={'flex flex-col gap-3 p-2'}>
                {config.map((item, index) => {
                    const isFounded = item.status === charStatuses.FOUNDED;
                    const foundedStyles = isFounded ? 'line-through text-appGreen' : '';
@@ -36,7 +37,7 @@ function Menu({config, ...props} : Props) {
                                <p className={`font-bold font-mono ${foundedStyles}`}>{item.name}</p>
                                {isFounded && <span className={'ml-auto opacity-80'}>{formattedTime}</span>}
                            </div>
-                           <p className={'tooltip hidden text-highlightText'}>{item.hint}</p>
+                           {!collapsed && <p className={'tooltip hidden text-highlightText'}>{item.hint}</p>}
                        </li>
                    )
                })}
@@ -51,9 +52,10 @@ function Menu({config, ...props} : Props) {
 
     return (
         // @ts-ignore
-        <div ref={ref} className={`collapse-menu fixed left-2 top-2 bg-mainBg bg-opacity-90 p-5 pr-0 pt-0 text-mainText overflow-hidden ${collapsed ? 'max-h-[35px]' : 'max-h-[99vh]'}`}>
+        <div ref={ref} className={`collapse-menu min-w-[300px] fixed left-2 top-2 bg-mainBg bg-opacity-90 py-5 pl-1 pr-0 pt-0 text-mainText overflow-hidden ${collapsed ? 'max-h-[50px]' : 'max-h-[99vh]'}`}>
             <div className={'flex items-center justify-center'}>
-                {collapsed && <p className={'text-mainText font-bold font-mono'}>Chars left: {itemsLeft}</p>}
+                <img className={'max-w-[40px] cursor-pointer box-border py-1'} src={'/imgs/icons/exit.svg'} alt={'exit-button'} onClick={() => exitMap()}/>
+                {collapsed && <p className={'text-mainText font-bold font-mono min-w-max text-center flex-grow'}>Chars left: {itemsLeft}</p>}
                 <div className={' max-w-min p-3 ml-auto' } onClick={toggleMenu}>
                     <div className={`collapse-button ${collapsed ? '' : 'active'} ` }></div>
                 </div>

@@ -59,7 +59,7 @@ const assignScore = [
             return  res.status(400).send(errors);
         }
 
-        const scoreWithTheSameNickname = await Score.findOne({nickname});
+        const scoreWithTheSameNickname = await Score.findOne({nickname, map_id});
 
         if(scoreWithTheSameNickname && scoreWithTheSameNickname.user_id !== user_id){
             const error = new Error('Score with the same nickname already belongs to another player');

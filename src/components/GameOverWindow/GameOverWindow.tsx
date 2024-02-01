@@ -91,7 +91,7 @@ function GameOverWindow({score, map, ...props}:Props) {
             case previousResultIsBetter: {
                 return (
                         <div className={'flex flex-col gap-2 items-center'}>
-                            <h1 className={'text-highlightText font-bold text-3xl'}>Your BestScore is</h1>
+                            <h1 className={'text-highlightText font-bold text-3xl text-center'}>Your BestScore is</h1>
                             <p className={'text-white font-bold font-mono text-lg'}>{getFormattedTime(usersPreviousScore.score)}</p>
                         </div>
                 )
@@ -119,7 +119,7 @@ function GameOverWindow({score, map, ...props}:Props) {
                 { renderAssignScoreForm() }
             </div>
 
-            <Leaderboard updateLeaderboardCount={updateLeaderboardCount} map_id={map._id} styles={'p-2 bg-secondaryBg max-h-[50vh] min-h-[50vh] overflow-auto overscroll-contain'}/>
+            <Leaderboard updateLeaderboardCount={updateLeaderboardCount} map_id={map._id} styles={'w-max p-2 bg-secondaryBg max-h-[50vh] min-h-[50vh] overflow-auto overscroll-contain'}/>
         </div>
     );
 }

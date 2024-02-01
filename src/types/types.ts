@@ -32,6 +32,7 @@ export type Map = {
     name: string,
     path: string,
     _id: string,
+    loaded?: boolean,
 }
 
 export type CheckCharacterExistOnPayload = {

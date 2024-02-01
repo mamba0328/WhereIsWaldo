@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const { createMap, deleteMap, editMap, getMaps,} = require('../../controllers/Maps');
+const protectRoute  = require("../../middleware/simpleProtect");
 
 router.get('/', getMaps);
 
-router.post('/', createMap);
+router.post('/', protectRoute, createMap);
 
-router.put('/:id', editMap);
+router.put('/:id', protectRoute, editMap);
 
-router.delete('/:id', deleteMap);
+router.delete('/:id', protectRoute, deleteMap);
 
 
 module.exports = router;

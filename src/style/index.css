@@ -133,6 +133,10 @@ body{
     display: inline-block;
 }
 
+.animate-grow{
+    animation: grow 5s infinite;
+}
+
 @keyframes bounce {
     0%, 100% {
         transform: translate(-7.5px, calc(0% - 15px));
@@ -156,5 +160,17 @@ body{
     75% {
         transform: translate(-7.5px, -15px) rotate(-45deg);
         animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+@keyframes grow {
+    0%{
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.2);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
     }
 }

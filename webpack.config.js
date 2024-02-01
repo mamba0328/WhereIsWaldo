@@ -20,6 +20,9 @@ module.exports = {
         },
         compress: true,
         port: 9000,
+        proxy: {
+            "/api/**": { target: process.env.API_ENDPOINT, secure: false },
+        }
     },
     plugins: [
         new MiniCssExtractPlugin({
@@ -29,6 +32,7 @@ module.exports = {
             'process.env.API_ENDPOINT': JSON.stringify(process.env.API_ENDPOINT),
         }),
     ],
+
     module: {
         rules: [
             {

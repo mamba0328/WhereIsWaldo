@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { createUser, deleteUser, getUsers, getRequestUser} = require('../../controllers/Users');
+const protectRoute = require("../../middleware/simpleProtect");
 
 router.get('/', getUsers);
 
@@ -11,7 +12,7 @@ router.post('/', createUser);
 
 // router.put('/:id', editUser);
 
-router.delete('/:id', deleteUser);
+router.delete('/:id', protectRoute, deleteUser);
 
 
 module.exports = router;

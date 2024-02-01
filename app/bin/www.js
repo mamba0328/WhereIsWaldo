@@ -5,14 +5,14 @@
  */
 require('dotenv').config()
 var app = require('../app');
-var debug = require('debug')('untitled:server');
+var debug = require('debug')('waldo:server');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.API_PORT);
+var port = normalizePort(process.env.API_PORT || 3000);
 app.set('port', port);
 
 /**

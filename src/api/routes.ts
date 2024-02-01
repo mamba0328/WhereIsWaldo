@@ -12,17 +12,7 @@ import {
 import { CheckCharacterExistOnPayload, ScorePayload} from "../types/types";
 import Leaderboard from "../components/Leaderboard/Leaderboard";
 
-const axiosApi = axios.create({
-    baseURL: process.env.API_ENDPOINT,
-});
-
-
-// axiosApi.interceptors.request.use((req):any => {
-//     if (typeof window !== 'undefined' && localStorage.getItem('token')) {
-//         req.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
-//     }
-//     return req;
-// })
+const axiosApi = axios.create();
 
 const { get, post, put, delete: del, } = axiosApi;
 

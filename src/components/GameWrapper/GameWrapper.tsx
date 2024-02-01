@@ -2,7 +2,6 @@ import React, {useState, useCallback, useEffect,} from 'react';
 
 import Board from "../Board";
 import Menu from "../Menu";
-import Leaderboard from "../Leaderboard/Leaderboard";
 
 import { getCharacters } from "../../api/routes";
 
@@ -10,25 +9,27 @@ import { pointerStatuses, charStatuses} from "../../consts/consts";
 import { Pointer, Character, Position, Map } from "../../types/types";
 import { checkCharacterExistOn } from "../../api/routes";
 import GameOverWindow from "../GameOverWindow/GameOverWindow";
+import Loader from "../Loader/Loader";
 
 type Props = {
-    map: Map
+    map: Map,
+    exitMap: Function,
 }
-const GameWrapper = ({map, ...props}:Props) => {
-    //TODO:
-    // - Select map;
-    // - Prevent map interaction if gameover;
-    // - Loader while checking response when check position?;
-    // - LocalStorage?;
-
+const GameWrapper = ({map, exitMap, ...props}:Props) => {
     const [gameOver, setGameOver] = useState(false);
     const [pointers, setPointers] = useState([] as Pointer[]);
     const [characters, setCharacters] = useState([] as Character[]);
     const [loaded, setLoaded] = useState(false);
 
-    useEffect(() => {
-        getSetCharacters();
+    const clearInitGame = async () => {
+        setLoaded(false);
+        await getSetCharacters();
+        setGameOver(false);
         setLoaded(true);
+    }
+
+    useEffect(() => {
+        clearInitGame();
     }, [map])
 
     useEffect(() => {
@@ -104,6 +105,7 @@ const GameWrapper = ({map, ...props}:Props) => {
 
 
     const handleBoardClick = (event:React.FormEvent<EventTarget>) => {
+        if(gameOver) return
         const [x, y] = getMousePos(event);
         const pointer = {
             x,
@@ -139,18 +141,17 @@ const GameWrapper = ({map, ...props}:Props) => {
     }
 
     if(!loaded){
-        return <h1>Loading...</h1>
+        return <Loader styles={'absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2'}/>
     }
-
 
     const score = Math.max(...characters.map(item => item.timeTaken));
 
     return (
-        <main className={'main'}>
+        <>
             {gameOver && <GameOverWindow map={map} score={score} />}
-            <Board config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers} deletePendingPointer={deletePendingPointer}/>
-            <Menu config={characters} />
-        </main>
+            <Board gameOver={gameOver} config={characters} imgUrl={map.path} handleClick={handleBoardClick} handleCharacterPositionGuess={handleCharacterPositionGuess} pointers={pointers} deletePendingPointer={deletePendingPointer}/>
+            <Menu config={characters} exitMap={exitMap} />
+        </>
     );
 };
 
