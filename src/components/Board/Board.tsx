@@ -58,7 +58,6 @@ const Board = ({config, imgUrl, gameOver, handleClick, handleCharacterPositionGu
                 </div>
                 {!gameOver && renderPointers()}
                 {!gameOver && renderActionMenu()}
-                <img src={'/imgs/icons/turn_phone.png'} className={'landscape:hidden portrait:inline-block fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'}/>
             </section>
     );
 };
