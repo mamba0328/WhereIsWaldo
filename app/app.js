@@ -4,17 +4,34 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require("cors");
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
 
 const { connectToMongoDB } = require('./db/connectMongoDB');
-
 const apiRouter = require('./routes/api');
 
+
 const app = express();
+const limiter = RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 20,
+});
 
 
+app.use(limiter);
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+        },
+    }),
+);
 
 app.set('trust proxy', true);
+
 app.use(compression());
+
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
