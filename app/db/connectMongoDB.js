@@ -3,6 +3,7 @@ require('dotenv').config()
 const MONGO_URI = process.env.MONGO_URI;
 async function connectToMongoDB(req, res, next) {
     try {
+        console.log(MONGO_URI)
         await mongoose.connect(MONGO_URI, { useNewUrlParser: true });
         console.log('Connected to MongoDB');
         next();
