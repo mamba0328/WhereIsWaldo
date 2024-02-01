@@ -9,8 +9,9 @@
   "proxy": "http://localhost:8080",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app/bin/www.js",
     "build": "webpack",
-    "server": "nodemon app/bin/www.js",
+    "server": "nodemon ./app/bin/www.js",
     "dev": "webpack-dev-server"
   },
   "author": "",
